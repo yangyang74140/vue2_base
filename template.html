@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>template</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+
+        // 注意点1: (1)全局注册的组件,可以直接使用. (2)局部注册的组件,要用components引用了才可以使用.
+        // 注意点2: 注册的组件,data数据不能直接使用对象,要使用函数data(){},因为组件可以重复使用,而对象
+        //         是引用地址,当重复使用这个组件时,组内的数据会互相影响,这并不是我们想看见的.
+
+        // 局部注册组件
+        const Bar={
+            // 数据使用对象,会报错
+            // data:{
+            //     count:0
+            // },
+            data(){
+                return {
+                    count:0
+                }
+            },
+            template:`<div>Bar {{count}}<button @click="count++"></button></div>`
+            // 组件必须要有一个根源
+            // template:`Bar`
+        }
+
+        // 全局注册组件
+        Vue.component('Foo',{
+            components:{Bar},
+            template:`<div>Foo
+                <Bar></Bar>
+                <Bar></Bar>
+                </div>`
+        })
+        const app = new Vue({
+            el:'#app',
+            template:`<div>app
+                <Foo></Foo>
+                </div>`
+        })
+    </script>
+</body>
+</html>
