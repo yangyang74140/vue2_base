@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>template</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+
+        /**
+         * 注意点如果组件里面还有子组件
+         * 生命周期的执行顺序
+         * 
+         * 初始化
+         * beforeCreate
+         * created
+         * beforeMount 
+         * bar-beforeCreate     (子组件)
+         * bar-created          (子组件)
+         * bar-beforeMount      (子组件)
+         * bar-mounted          (子组件)
+         * mounted
+         * 
+         * 销毁
+         * beforeDestroy
+         * bar-beforeDestroy    (子组件)
+         * bar-destroyed        (子组件)
+         * destroyed 
+         * 
+         * 
+        */
+
+        const Bar={
+            beforeCreate(){
+                console.log('bar-beforeCreate');
+            },
+            created(){
+                console.log('bar-created');
+            },
+            beforeMount(){
+                console.log('bar-beforeMount');
+            },
+            mounted(){
+                console.log('bar-mounted');
+                
+            }, 
+            beforeUpdate(){
+                console.log('bar-beforeUpdate');
+                
+            },
+            updated(){
+                console.log('bar-updated');
+                
+            },
+            beforeDestroy(){
+                console.log('bar-beforeDestroy');
+                
+            },
+            destroyed(){
+                console.log('bar-destroyed');
+                
+            },
+            template:`<div>Bar</div>`
+        }
+
+        const Foo ={
+            components:{
+                Bar
+            },
+            data(){
+                return {
+                    count:0
+                }
+            },
+            beforeCreate(){
+                console.log('beforeCreate');
+            },
+            created(){
+                console.log('created');
+            },
+            beforeMount(){
+                console.log('beforeMount');
+            },
+            mounted(){
+                console.log('mounted');
+                
+            },
+            beforeUpdate(){
+                console.log('beforeUpdate');
+                
+            },
+            updated(){
+                console.log('updated');
+                
+            },
+            beforeDestroy(){
+                console.log('beforeDestroy');
+                
+            },
+            destroyed(){
+                console.log('destroyed');
+                
+            },
+            template:`<div>Foo
+                {{count}}
+                <button @click="count++"></button>
+                <Bar></Bar>
+                </div>`
+        }
+
+        const app = new Vue({
+            components:{
+                Foo
+            },
+            el:'#app',
+            data:{
+                isShow:true
+            },
+            template:`<div>app
+                <Foo v-if="isShow"></Foo>
+                </div>`
+        })
+    </script>
+</body>
+</html>
