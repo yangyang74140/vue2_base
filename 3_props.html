@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>template</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+
+        const Foo={
+            /**
+             * 可以直接使用数组的方式接收
+             * props:['title'],
+             * 如果传入的属性有类型的限制或要求,使用下面的方式 
+            */
+            props:{
+                title:{
+                    // 1. 类型限制
+                    type:String,
+                    // 2. 默认值
+                    default:'默认值',
+                    // 3. 必填
+                    required:true,
+                    // 4. 验证
+                    validator(value){
+                        return value==='a' ? true:false
+                    }
+                }
+            },
+            template:`<div>{{title}}</div>`
+        }
+
+
+        const app = new Vue({
+            el:'#app',
+            components:{Foo},
+            // 1. 类型限制
+            // template:`<div>
+            //             <Foo :title="1"></Foo>
+            //          </div>`
+            // 2. 默认值
+            // template:`<div>
+            //             <Foo></Foo>
+            //          </div>`
+            // 3. 必填
+            // template:`<div>
+            //             <Foo title="title"></Foo>
+            //          </div>`
+            // 4. 验证
+                     template:`<div>
+                        <Foo title="a"></Foo>
+                     </div>`
+        })
+    </script>
+</body>
+</html>
