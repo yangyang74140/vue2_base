@@ -24,7 +24,7 @@
                     default:'默认值',
                     // 3. 必填
                     required:true,
-                    // 4. 验证
+                    // 4. 验证\约束 传入的值,只能是指定的类型
                     validator(value){
                         return value==='a' ? true:false
                     }
@@ -41,15 +41,18 @@
             // template:`<div>
             //             <Foo :title="1"></Foo>
             //          </div>`
+            
             // 2. 默认值
             // template:`<div>
             //             <Foo></Foo>
             //          </div>`
+            
             // 3. 必填
             // template:`<div>
             //             <Foo title="title"></Foo>
             //          </div>`
-            // 4. 验证
+
+            // 4. 验证\约束 传入的值,只能是指定的类型
                      template:`<div>
                         <Foo title="a"></Foo>
                      </div>`
