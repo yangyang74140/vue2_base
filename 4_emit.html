@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>template</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+
+        const Foo={
+            props:['title'],
+            methods:{
+                handleTitle(){
+                    /**
+                     * 因为vue是单项数据流,所以不能直接改变父组件的
+                     * 可以使用emit,改变父组件的值
+                    */ 
+                    this.$emit('change-title','heihei')
+                }
+            },
+            template:`<div>{{title}}
+                <button @click="handleTitle">click</button>
+                </div>`
+        }
+
+
+        const app = new Vue({
+            el:'#app',
+            data(){
+                return{
+                    fooTitle:'hh'
+                }
+            },
+            methods:{
+                changeFooTitle(value){
+                    this.fooTitle=value
+                }
+            },
+            components:{Foo},
+                     template:`<div>
+                        <Foo :title="fooTitle" @change-title="changeFooTitle"></Foo>
+                     </div>`
+        })
+    </script>
+</body>
+</html>

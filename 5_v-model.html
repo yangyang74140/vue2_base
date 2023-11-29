@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>5_v-model</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+        /**
+         * 使用emit改变父组件的数据比较麻烦,我们可以是用v-model绑定数据
+         * 缺点:v-model 只能使用一次
+         */
+
+        /**
+         * v-model  第一种情况
+         * 父组件使用v-model绑定的数据,默认赋值给value
+         * 默认使用input事件就可以直接给父组件的属性赋值
+         * 
+         * 优点:不用自己定义属性,直接使用
+         * 缺点:表述不够准确,与父组件传递属性名字完全不一样
+         */
+        // const Foo = {
+        //     props: ["value"],
+        //     methods: {
+        //         handleTitle() {
+        //             this.$emit("input", "heihei");
+        //         },
+        //     },
+        //     template: `<div>
+        //         {{value}}
+        //                     <button @click="handleTitle">click</button>
+        //         </div>`,
+        // };
+
+        /**
+         * v-model  第二种情况
+         * 改变v-model的默认赋值以及默认事件
+         * 使用model
+        */
+        const Foo = {
+            props: ["fooTitle"],
+            model: {
+                prop: "fooTitle",
+                event: 'changeFooTitle'
+            },
+            methods: {
+                handleTitle() {
+                    this.$emit("changeFooTitle", "newFooTitle");
+                },
+            },
+            template: `<div>
+                {{fooTitle}}
+                <button @click="handleTitle">click</button>
+                </div>`,
+        };
+
+        const app = new Vue({
+            el: "#app",
+            data() {
+                return {
+                    fooTitle: "hh",
+                };
+            },
+            components: { Foo },
+            template: `<div>
+                        <Foo v-model="fooTitle"></Foo>
+                     </div>`,
+        });
+    </script>
+</body>
+
+</html>

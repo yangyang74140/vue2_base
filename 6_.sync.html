@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>6_.sync</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+        /**
+         * .sync与v-model绑定数据几乎一样
+         * 优点: .sync可以使用多次
+         * tips: 因为v-model与.sync类似,所以在vue3合并了v-mode与.sync,v-model可以使用多个了
+         */
+
+        /**
+         * 接收:直接使用父组件传过来的属性名
+         * 修改值: update:属性名
+        */
+        const Foo = {
+            props: ["fooTitle"],
+            methods: {
+                handleTitle() {
+                    this.$emit("update:fooTitle", "newFooTitle");
+                },
+            },
+            template: `<div>
+                {{fooTitle}}
+                <button @click="handleTitle">click</button>
+                </div>`,
+        };
+
+        const app = new Vue({
+            el: "#app",
+            data() {
+                return {
+                    fooTitle: "hh",
+                };
+            },
+            components: { Foo },
+            template: `<div>
+                        <Foo :fooTitle.sync="fooTitle"></Foo>
+                     </div>`,
+        });
+    </script>
+</body>
+
+</html>
