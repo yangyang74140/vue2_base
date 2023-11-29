@@ -39,13 +39,14 @@
             },
             created(){
                 console.log('bar-created');
+                // fetch api
             },
             beforeMount(){
                 console.log('bar-beforeMount');
             },
             mounted(){
                 console.log('bar-mounted');
-                
+                // window.addEventListener
             }, 
             beforeUpdate(){
                 console.log('bar-beforeUpdate');
@@ -53,7 +54,7 @@
             },
             updated(){
                 console.log('bar-updated');
-                
+                // dom -> updated
             },
             beforeDestroy(){
                 console.log('bar-beforeDestroy');
@@ -61,7 +62,7 @@
             },
             destroyed(){
                 console.log('bar-destroyed');
-                
+                // window.removeEventListener
             },
             template:`<div>Bar</div>`
         }
