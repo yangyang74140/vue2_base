@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9_directive</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+
+        //因为焦点只有一个,所以只有一个会生效
+        const Foo = {
+            // 局部自定义指令
+            directives: {
+                partFocus: {
+                    inserted: function (el, binding) {
+                        console.log('part-el', el);
+                        console.log('part-binding', binding);
+                        el.focus()
+                    },
+                }
+            },
+            template: `<div>
+                <div>
+                   局部:<input v-partFocus.a.b="1+1" />
+                </div>
+                <div>
+                   全局:<input v-focus />
+                </div> 
+                </div>`
+        }
+
+        // 全局自定义指令
+        Vue.directive('focus', {
+            inserted: function (el, binding) {
+                // console.log('el', el);
+                // console.log('binding', binding);
+                el.focus()
+            }
+        })
+
+        const app = new Vue({
+            el: '#app',
+            components: { Foo },
+            template: `<div>app
+                <Foo></Foo>
+                </div>`
+        })
+    </script>
+</body>
+
+</html>
