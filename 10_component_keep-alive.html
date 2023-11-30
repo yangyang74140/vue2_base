@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10_component_keep-alive</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="butClick('Home')">Home</button>
+        <button @click="butClick('Post')">Post</button>
+        <button @click="butClick('Archive')">Archive</button>
+        <div>
+            <!-- <keep-alive include="Home">
+                <component :is="showComponent"></component>
+            </keep-alive> -->
+            <keep-alive exclude="Home">
+                <component :is="showComponent"></component>
+            </keep-alive>
+        </div>
+    </div>
+    <script>
+
+        /**
+         * 当组件被缓存就会有:activated\deactivated
+         * 
+         * include:只有这个组件可以被缓存
+         * exclude:除了这个组件其他都可以被缓存
+        */
+
+        Vue.component('Home', {
+            data() {
+                return { checked: false }
+            },
+            template: `<div>
+                性别:<input type="radio" name='gender' v-model="checked">男</input>
+                <input type="radio" name='gender' v-model="checked">女</input>
+                </div>`,
+            activated() {
+                console.log('home-激活');
+            },
+            deactivated() {
+                console.log('home-失效');
+            },
+        })
+        Vue.component('Archive', {
+            template: `<div>Archive component</div>`
+        })
+        Vue.component('Post', {
+            template: `<div>Post component</div>`,
+            activated() {
+                console.log('post-激活');
+            },
+            deactivated() {
+                console.log('post-失效');
+            },
+        })
+
+        const app = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    showComponent: 'Home'
+                }
+            },
+            methods: {
+                butClick(showComponent) {
+                    this.showComponent = showComponent
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

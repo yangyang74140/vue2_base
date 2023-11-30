@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10_component_名字</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="butClick('Home')">Home</button>
+        <button @click="butClick('Post')">Post</button>
+        <button @click="butClick('Archive')">Archive</button>
+        <div>
+            <!-- 动态组件 -->
+            <component :is="showComponent"></component>
+        </div>
+    </div>
+    <script>
+        Vue.component('Home', {
+            template: `<div>Home component</div>`
+        })
+        Vue.component('Archive', {
+            template: `<div>Archive component</div>`
+        })
+        Vue.component('Post', {
+            template: `<div>Post component</div>`
+        })
+
+        const app = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    showComponent: 'Home'
+                }
+            },
+            methods: {
+                butClick(showComponent) {
+                    this.showComponent = showComponent
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

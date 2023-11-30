@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10_component_配置项</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="butClick('Home')">Home</button>
+        <button @click="butClick('Post')">Post</button>
+        <button @click="butClick('Archive')">Archive</button>
+        <div>
+            <!-- 动态组件 -->
+            <component :is="showComponent"></component>
+        </div>
+    </div>
+    <script>
+
+        // 配置项相当于是一个局部组件,写法与组件一致
+        const componentMap = {
+            Home: {
+                data() {
+                    return { value: 'test' }
+                },
+                mounted() {
+                    console.log('home');
+                },
+                computed: {
+                    aa() {
+                        return 'aa'
+                    }
+                },
+                template: `<div>Home map----------data:{{value}}----computed:{{aa}}</div>`
+            },
+            Post: {
+                template: `<div>Post map</div>`
+            },
+            Archive: {
+                template: `<div>Archive map</div>`
+            }
+        }
+
+        const app = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    showComponent: componentMap['Home'],
+                }
+            },
+            methods: {
+                butClick(showComponent) {
+                    this.showComponent = componentMap[showComponent]
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
