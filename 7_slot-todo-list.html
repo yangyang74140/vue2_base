@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>7_slot-todo-list</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+        const TodoList = {
+            props: ["list"],
+            template: `<div>
+                <ul>
+                    <li v-for="(item,index) in list" :key>
+                        <slot :item="item" :index="index">
+                            {{item.text}}
+                        </slot>
+                    </li>
+                </ul>
+                </div>`,
+        };
+
+        const app = new Vue({
+            el: "#app",
+            data() {
+                return {
+                    list: [{ text: 'a' }, { text: 'b' }, { text: 'c' }],
+                };
+            },
+            components: { TodoList },
+            template: `<div>
+                        <TodoList :list="list"></TodoList>
+                        <div>
+                        ------------------
+                        </div>
+                        <TodoList :list="list" v-slot="{item,index}">
+                            {{item.text}} + ({{index+1}})
+                        </TodoList>
+                     </div>`,
+        });
+    </script>
+</body>
+
+</html>

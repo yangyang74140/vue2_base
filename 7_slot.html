@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>7_slot</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+
+
+        // 插槽
+        const Foo1 = {
+            template: `<div>
+                <slot></slot>
+                </div>`,
+        };
+
+        // 插槽默认值 
+        const Foo2 = {
+            template: `<div>
+                <slot>默认值</slot>
+                </div>`,
+        };
+        //  具名插槽
+        const Foo3 = {
+            template: `<div>
+                <slot name='one'></slot>
+                <slot name='two'></slot>
+                </div>`,
+        };
+
+        // 作用域插槽
+        const Foo4 = {
+            data() {
+                return {
+                    list: [1, 2, 3]
+                };
+            },
+            template: `<div>
+                <slot :list="list"></slot>
+                </div>`,
+        };
+
+        const app = new Vue({
+            el: "#app",
+
+            components: { Foo1, Foo2, Foo3, Foo4, },
+            template: `<div>
+                        <Foo1>插槽</Foo1>
+                        <Foo2></Foo2>
+                        <Foo3>
+                            <template v-slot:one>
+                                <div>one----------作用域插槽完整写法: v-slot:one</div>
+                            </template>    
+                            <template #two>
+                                <div>two----------作用域插槽简写: #two</div>
+                            </template>    
+                        </Foo3>
+                        <Foo4  v-slot="{list}">
+                            <div>作用域插槽:{{list}}</div>
+                        </Foo4>
+                     </div>`,
+        });
+    </script>
+</body>
+
+</html>
