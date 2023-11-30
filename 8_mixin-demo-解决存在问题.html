@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8_mixin-demo-解决存在问题</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+
+        /**
+         * 混入存在什么问题?
+         *  1.命名冲突
+         *  2.来源不清晰
+         * 
+         * 当引入了多个混入时,就不能分清楚,这个属性或方法是从哪里来的
+         *  mixins: [fooMixin,barMixin,listMixin]
+         * 
+         * 使用作用域插槽来解决
+        */
+
+
+        const MouseMove = {
+            data() {
+                return {
+                    x: 1,
+                    y: 0
+                }
+            },
+            methods: {
+                changeMove(e) {
+                    this.x = e.pageX
+                    this.y = e.pageY
+                }
+            },
+            mounted() {
+                window.addEventListener('mousemove', this.changeMove)
+            },
+            destroyed() {
+                window.removeEventListener('mousemove', this.changeMove)
+            },
+            template: `<div>
+                    <slot :x='x' :y='y'></slot>
+                </div>`
+        }
+
+
+        const Foo = {
+            components: { MouseMove },
+            template: `<div>Foo
+                <MouseMove v-slot="{x:XX,y:YY}">x:{{XX}},y:{{YY}}</MouseMove>
+                </div>`
+        }
+
+
+        const app = new Vue({
+            el: '#app',
+            components: { Foo },
+            template: `<div>app
+                    <Foo></Foo>
+                </div>`
+        })
+    </script>
+</body>
+
+</html>

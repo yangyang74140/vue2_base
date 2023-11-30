@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8_mixin-demo-复用</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+
+        const MouseMoveMixin = {
+            data() {
+                return {
+                    x: 1,
+                    y: 0
+                }
+            },
+            methods: {
+                changeMove(e) {
+                    this.x = e.pageX
+                    this.y = e.pageY
+                }
+            },
+            mounted() {
+                window.addEventListener('mousemove', this.changeMove)
+            },
+            destroyed() {
+                window.removeEventListener('mousemove', this.changeMove)
+            },
+        }
+
+        const Foo = {
+            mixins: [MouseMoveMixin],
+            template: `<div>
+                <div>Foo----x:{{x}},y:{{y}}</div>
+                </div>`
+        }
+
+        const Bar = {
+            mixins: [MouseMoveMixin],
+            template: `<div>
+                <div>Bar----x:{{x}},y:{{y}}</div>
+                </div>`
+        }
+
+        const app = new Vue({
+            el: '#app',
+            components: { Foo, Bar },
+            template: `<div>app
+                    <Foo></Foo>
+                    <Bar></Bar>
+                </div>`
+        })
+    </script>
+</body>
+
+</html>

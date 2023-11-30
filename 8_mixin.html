@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8_mixin</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+
+        /**
+         * 什么情况会使用到混入?
+         *  当有复用的内容时
+         * 
+         * 混入存在什么问题?
+         *  1.命名冲突
+         *  2.来源不清晰
+        */
+
+        /**
+         * 不管是局部组件还是全局组件,当组件内容与混入的内容发生了冲突,会保留组件内容
+         * 相当于是组件重写或者是覆盖了混入的内容
+         * 没有冲突的内容都会保留下来
+        */
+
+        /**
+         * 局部混入
+         * 使用局部混入,需要使用mixins引入,mixins是一个数组,引入多个
+        */
+        const fooMixin = {
+            data() {
+                return {
+                    value: 'value----fooMixin'
+                }
+            },
+            methods: {
+                getName() {
+                    console.log('getName----fooMixin');
+
+                }
+            }
+        }
+
+        /**
+         * 全局混入
+         * 
+         * 全局混入不需要在组件内部引入,加载某个组件时,会直接执行
+         * 
+         * 1.这里的全局混入会打印两次
+         * 这里有一个根组件,还有一个局部组件Foo
+        */
+        Vue.mixin({
+            mounted() {
+                console.log('global Mixin');
+            }
+        })
+
+        const Foo = {
+            mixins: [fooMixin],
+            data() {
+                return {
+                    value: 'value----Foo'
+                }
+            },
+            methods: {
+                getName() {
+                    console.log('getName----Foo');
+                }
+            },
+            template: `<div>Foo
+                <div>{{value}}</div>
+                <div><button @click="getName">click</button></div>
+                </div>`
+        }
+
+        const app = new Vue({
+            el: '#app',
+            components: { Foo },
+            template: `<div>app
+                    <Foo></Foo>
+                </div>`
+        })
+    </script>
+</body>
+
+</html>
