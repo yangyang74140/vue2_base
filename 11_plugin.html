@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11_plugin</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        app
+        <Foo></Foo>
+        <input v-focus />
+    </div>
+    <script>
+        /**
+         * vue plugin
+         * 1.添加全局hans
+         * 2.添加全局资源 - 组件\指令
+         * 3.混入一些组件选项
+         * 4.添加 vue 的实例方法
+        */
+
+        const MyPlugin = {
+            /**
+             * Vue:Vue的实例,options:用户传入的配置
+            */
+            install(Vue, options) {
+                // console.log('Vue', Vue);
+                // console.log('options', options);
+
+                // 1.添加全局函数
+                Vue.console = (...args) => {
+                    console.log(args);
+                }
+
+                // 2-1.添加全局资源 - 组件
+                Vue.component('Foo', {
+                    template: `<div>Foo</div>`
+                })
+
+                // 2-2.添加全局资源 - 指令
+                Vue.directive('focus', {
+                    inserted: function (el) {
+                        el.focus()
+                    }
+                })
+
+                // 3.混入一些组件选项
+                Vue.mixin({
+                    mounted() {
+                        console.log('plugin mixin');
+                    }
+                })
+
+                // 4.添加 vue 的实例方法
+                Vue.prototype.Aha = () => {
+                    console.log('Aha');
+                }
+
+            }
+        }
+
+        Vue.use(MyPlugin, {
+            name: 'plugin'
+        })
+
+
+        Vue.console('test')
+
+        const app = new Vue({
+            el: '#app',
+            mounted() {
+                this.Aha()
+            }
+        })
+    </script>
+</body>
+
+</html>
