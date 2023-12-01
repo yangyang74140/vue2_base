@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12_async_component</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+
+        // Vue.component('Foo', (resolve, reject) => {
+        //     // 1.
+        //     // setTimeout(() => {
+        //     //     resolve({
+        //     //         template: `<div>Foo</div>`
+        //     //     })
+        //     // }, 2000);
+
+        //     // 2.
+        //     // import('./Foo.js').then(code => {
+        //     //     console.log('code', code);
+        //     //     resolve(code.default)
+        //     // })
+
+        //     // 3.
+        //     return import('./Foo.js')
+        // })
+
+
+        // 4.
+        // Vue.component("Foo", () => import('./Foo.js'))
+
+
+        const LoadingComponent = {
+            template: `<div>loading...</div>`
+        }
+
+        const ErrorComponent = {
+            template: `<div>Error</div>`
+        }
+
+        // 延迟函数
+        const delay = (time, fn) => {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve(fn())
+                    // reject()
+                }, time);
+            })
+        }
+
+        // 5.
+        Vue.component("Foo", () => ({
+            // 需要加载的组件 (应该是一个 `Promise` 对象)
+            component: delay(2000, () => import('./Foo.js')),
+            // 异步组件加载时使用的组件
+            loading: LoadingComponent,
+            // 加载失败时使用的组件
+            error: ErrorComponent,
+            // 如果提供了超时时间且组件加载也超时了，
+            // 则使用加载失败时使用的组件。默认值是：`Infinity`
+            timeout: 1000
+        }))
+
+        const app = new Vue({
+            el: '#app',
+            template: `<div>app
+                <Foo></Foo>
+                </div>`
+        })
+    </script>
+</body>
+
+</html>
