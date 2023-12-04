@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>13_render-function</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+        // 1. v-if  v-for
+        // const Foo = {
+        //     props: ['show'],
+        //     render(createElement) {
+        //         // v-if
+        //         if (this.$props.show) {
+        //             let names = ['yang', 'cai', 'chen']
+        //             // children  ->  string | array
+
+        //             // v-for
+        //             return createElement('div', names.map(name => {
+        //                 return createElement('p', name)
+        //             }))
+        //         } else {
+        //             return createElement('div', false)
+        //         }
+        //     }
+        // }
+
+
+        // 2. v-model
+        // const Foo = {
+        //     props: ['value'],
+        //     render(createElement) {
+        //         let self = this
+        //         return createElement('div', [createElement('input', {
+        //             domProps: {
+        //                 value: self.value
+        //             },
+        //             on: {
+        //                 input(e) {
+        //                     self.$emit("input", e.target.value)
+        //                 }
+        //             }
+        //         })])
+        //     }
+        // }
+
+        // 3. 修饰符
+        // const Foo = {
+        //     render(createElement) {
+        //         return createElement('div', [createElement('button', {
+        //             on: {
+        //                 // 可以点击多次
+        //                 // click() {
+        //                 // 使用once 修饰符
+        //                 '~click'() {
+        //                     console.log('click');
+        //                 }
+        //             },
+
+        //         }, 'click')])
+        //     }
+        // }
+
+        // 4.插槽
+        const Foo = {
+            render(createElement) {
+                console.log(this.$slots);
+
+                // return createElement('div', this.$slots.default)
+                if (this.$slots.one) {
+                    return createElement('div', this.$slots.one)
+                }
+            }
+        }
+
+
+        const app = new Vue({
+            el: '#app',
+            components: { Foo },
+            data() {
+                return {
+                    msg: "hello word"
+                }
+            },
+            template: `<div>
+                <div>{{msg}}</div>
+                <Foo :show="true" v-model="msg">
+                    插槽默认值 
+                    <template v-slot:one>one</template>
+                    <template #two>two</template>
+                </Foo>
+                </div>`
+        })
+    </script>
+</body>
+
+</html>
