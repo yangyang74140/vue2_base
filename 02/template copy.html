@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>template</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+        function vue(data) {
+            this._data = data
+            console.log('_data', this._data);
+
+            for (var key in this._data) {
+                Object.defineProperty(this._data, key, {
+                    get: function () {
+                        console.log(this.data[key], key)
+                        return this._data[key];
+                    },
+                    set: function (newValue) {
+                        console.log(key, newValue)
+                        return this._data[key] = newValue
+                    }
+                })
+            }
+        }
+
+        var vm = new vue({
+            data() {
+                return {
+                    name: 'xiaoming',
+                    age: 18
+                }
+            },
+            // data: {
+            //     name: 'xiaoming',
+            //     age: 18
+            // },
+            methods: {
+                getName() {
+                    return this.name
+                }
+            }
+        })
+
+        // console.log('vm', vm);
+    </script>
+</body>
+
+</html>
