@@ -11,6 +11,14 @@
 <body>
     <div id="app"></div>
     <script>
+        /**
+         * 1. Render函数是Vue2.x新增的一个函数,主要用来提升节点的性能,它是基于JavaScript计算.使用Render函数将
+         *    Template里面的节点解析成虚拟的Dom.
+         * 2. Vue推荐在绝大多数情况下使用模板来创建你的HTML.然而在一些场景中,你真的需要JavaScript的完全编程的能力.
+         *    这时你可以用渲染函数,它比模板更加接近编译器.
+        */
+
+
         // 1. v-if  v-for
         // const Foo = {
         //     props: ['show'],
@@ -68,8 +76,15 @@
 
         // 4.插槽
         const Foo = {
+            data() {
+                return {
+                    testValue: "testValue"
+                }
+            },
+
             render(createElement) {
                 console.log(this.$slots);
+                console.log('testValue', this.testValue);
 
                 // return createElement('div', this.$slots.default)
                 if (this.$slots.one) {
